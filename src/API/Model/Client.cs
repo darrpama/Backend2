@@ -1,6 +1,10 @@
 using System.ComponentModel.DataAnnotations.Schema;
+
+namespace API.Model;
+
 public class Client
 {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("id")]
     public Guid Id { get; set; }
     [Column("client_name")]
