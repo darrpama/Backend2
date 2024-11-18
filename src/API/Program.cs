@@ -24,7 +24,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/api/users", async (ApplicationDbContext db) => await db.Clients.ToListAsync());
+app.MapGet("/api/clients", async (ApplicationDbContext db) => await db.Clients.ToListAsync());
 
 app.Run();
 

@@ -5,6 +5,7 @@ namespace API.Model;
 public class Supplier
 {
     [Column("id")]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
     [Column("name")]
     public string Name { get; set; } = "";

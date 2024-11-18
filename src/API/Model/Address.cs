@@ -5,6 +5,7 @@ namespace API.Model;
 public class Address
 {
     [Column("id")]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
     [Column("country")]
     public string Country { get; set; }
