@@ -1,16 +1,19 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.Model;
 
-public class Address
+public class Address : BaseModel
 {
-    [Column("id")]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public Guid Id { get; set; }
     [Column("country")]
-    public string Country { get; set; }
+    [MaxLength(100)]
+    public string Country { get; set; } = "";
+
     [Column("city")]
-    public string City { get; set; }
+    [MaxLength(100)]
+    public string City { get; set; } = "";
+
     [Column("street")]
-    public string Street { get; set; }
+    [MaxLength(100)]
+    public string Street { get; set; } = "";
 }
