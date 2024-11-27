@@ -17,7 +17,7 @@ public class Product : BaseModel
     public int AvailableStock { get; set; }
     
     [Column("last_update_date")]
-    public DateTime LastUpdateDate { get; set; }
+    public DateTimeOffset LastUpdateDate { get; set; }
     
     [Column("supplier_id")]
     public Guid SupplierId { get; set; }

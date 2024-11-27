@@ -27,7 +27,7 @@ public class ApplicationDbContext : DbContext
                 ClientSurname = "Holland",
                 Birthday = new DateTimeOffset(1999, 8, 20, 0, 0, 0, new TimeSpan(0, 0, 0)),
                 Gender = "Male",
-                RegistrationDate = new DateTime(2015, 1, 10),
+                RegistrationDate = new DateTimeOffset(2015, 1, 10, 0, 0, 0, new TimeSpan(0, 0, 0)),
                 AddressId = Guid.Parse("3ab3bc51-5391-482a-9027-19330f029760")
             },
             new Client
@@ -37,7 +37,7 @@ public class ApplicationDbContext : DbContext
                 ClientSurname = "Sky",
                 Birthday = new DateTimeOffset(1979, 4, 21, 0, 0, 0, new TimeSpan(0, 0, 0)),
                 Gender = "Female",
-                RegistrationDate = new DateTime(2017, 4, 11),
+                RegistrationDate = new DateTimeOffset(2017, 4, 11, 0, 0, 0, new TimeSpan(0, 0, 0)),
                 AddressId = Guid.Parse("ce006a62-c7c7-4ddc-911a-f6da5e946a5a")
             },
             new Client
@@ -47,7 +47,7 @@ public class ApplicationDbContext : DbContext
                 ClientSurname = "Polland",
                 Birthday = new DateTimeOffset(1981, 2, 22, 0, 0, 0, new TimeSpan(0, 0, 0)),
                 Gender = "Male",
-                RegistrationDate = new DateTime(2019, 8, 1),
+                RegistrationDate = new DateTimeOffset(2019, 8, 1, 0, 0, 0, new TimeSpan(0, 0, 0)),
                 AddressId = Guid.Parse("20b68e72-492b-4ced-9a6a-3c1f157045c2")
             }
         );
@@ -60,7 +60,7 @@ public class ApplicationDbContext : DbContext
                 Category = "Food",
                 Price = 3.23,
                 AvailableStock = 100,
-                LastUpdateDate = new DateTime(2015, 1, 10),
+                LastUpdateDate = new DateTimeOffset(2015, 1, 10, 0, 0, 0, new TimeSpan(0, 0, 0)),
                 SupplierId = Guid.Parse("ea0293ba-ec51-41b1-b67b-6ec518f1723e"),
                 ImageId = Guid.Parse("167d0be7-30fe-476d-af34-3ce9dcdef22a")
             },
@@ -71,7 +71,7 @@ public class ApplicationDbContext : DbContext
                 Category = "Food",
                 Price = 5.55,
                 AvailableStock = 234,
-                LastUpdateDate = new DateTime(2017, 4, 11),
+                LastUpdateDate = new DateTimeOffset(2017, 4, 11, 0, 0, 0, new TimeSpan(0, 0, 0)),
                 SupplierId = Guid.Parse("d289e122-a531-4a91-8d9b-656e003f0612"),
                 ImageId = Guid.Parse("77d95bc4-9eb8-43cb-bed5-f191e34e206c")
             },
@@ -82,7 +82,7 @@ public class ApplicationDbContext : DbContext
                 Category = "Food",
                 Price = 14.46,
                 AvailableStock = 12,
-                LastUpdateDate = new DateTime(2019, 8, 12),
+                LastUpdateDate = new DateTimeOffset(2019, 8, 12, 0, 0, 0, new TimeSpan(0, 0, 0)),
                 SupplierId = Guid.Parse("41c98aa5-e98d-4dff-8b83-5cb29b20d4d6"),
                 ImageId = Guid.Parse("77d95bc4-9eb8-43cb-bed5-f191e34e206c")
             }
@@ -110,7 +110,7 @@ public class ApplicationDbContext : DbContext
         );
         Image? image1 = new Image();
         Image? image2 = new Image();
-        using (FileStream fs = new FileStream("../Assets/image1.json", FileMode.Open))
+        using (FileStream fs = new FileStream("Assets/image1.json", FileMode.Open))
         {
             try
             {
@@ -121,7 +121,7 @@ public class ApplicationDbContext : DbContext
                 Console.WriteLine(ex.Message);
             }
         }
-        using (FileStream fs = new FileStream("../Assets/image2.json", FileMode.Open))
+        using (FileStream fs = new FileStream("Assets/image2.json", FileMode.Open))
         {
             try
             {

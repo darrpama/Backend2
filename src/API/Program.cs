@@ -53,7 +53,7 @@ app.MapPost("/api/v1/clients/add", async (Client client, ApplicationDbContext db
 });
 
 
-app.MapGet("/api/v1/products", async (ApplicationDbContext db) => await db.Clients.ToListAsync());
+app.MapGet("/api/v1/products", async (ApplicationDbContext db) => await db.Products.ToListAsync());
 
 app.MapGet("/api/v1/products/{id:Guid}", async (Guid id, ApplicationDbContext db) =>
 {
@@ -75,11 +75,11 @@ app.MapDelete("/api/v1/products/{id:Guid}", async (Guid id, ApplicationDbContext
     return Results.Json(product);
 });
 
-app.MapPost("/api/v1/clients", async (Client client, ApplicationDbContext db) =>
-{
-    await db.Clients.AddAsync(client);
-    await db.SaveChangesAsync();
-    return client;
-});
+// app.MapPost("/api/v1/clients", async (Client client, ApplicationDbContext db) =>
+// {
+//     await db.Clients.AddAsync(client);
+//     await db.SaveChangesAsync();
+//     return client;
+// });
 
 app.Run();
