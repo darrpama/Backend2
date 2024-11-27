@@ -1,16 +1,17 @@
 using API.Model;
+using API.Services;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
-using Npgsql.Internal;
 using Swashbuckle.AspNetCore.Annotations;
-using Microsoft.OpenApi.Any;
-using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options => 
+
+var services = builder.Services;
+
+services.AddEndpointsApiExplorer();
+services.AddSwaggerGen(options => 
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
@@ -35,8 +36,14 @@ var connectionString =
         ?? throw new InvalidOperationException("Connection string"
         + "'DefaultConnection' not found.");
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
+
+services.AddAddressService();
+services.AddClientService();
+services.AddImageService();
+services.AddProductService();
+services.AddSupplierService();
 
 var app = builder.Build();
 
@@ -48,43 +55,70 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+var scope = app.Services.CreateScope();
+
 app.MapGet("/api/v1/clients", async (ApplicationDbContext db) =>
 {
-    return await db.Clients.ToListAsync();
+    try
+    {
+        var clientService = scope.ServiceProvider.GetRequiredService<ClientService>();
+        var AllClients = await clientService.GetAllClientsAsync();
+        return Results.Ok(AllClients);
+    }
+    catch (ArgumentException ex)
+    {
+        return Results.BadRequest($"{ex.Message}");
+    }
 })
-.WithMetadata(new SwaggerOperationAttribute(summary: "Get all clients.", description: "Returns all clients in json array."));
+.WithMetadata(new SwaggerOperationAttribute(summary: "Get all clients.", description: "Returns all clients."));
 
-app.MapGet("/api/v1/clients/{id:Guid}", async (Guid id, ApplicationDbContext db) =>
+app.MapGet("/api/v1/clients/{id:Guid}", async (Guid id) =>
 {
-    var client = await db.Clients.FindAsync(id);
-
-    if (client == null) return Results.NotFound(new { message = "Client not found." });
-
-    return Results.Json(client);
+    try
+    {
+        var clientService = scope.ServiceProvider.GetRequiredService<ClientService>();
+        var client = await clientService.GetClientAsync(id);
+        return Results.Ok(client);
+    }
+    catch (ArgumentException ex)
+    {
+        return Results.BadRequest($"{ex.Message}");
+    }
 })
-.WithMetadata(new SwaggerOperationAttribute(summary: "Get one client.", description: "Returns one client if the existing id provided."))
-.WithMetadata(new SwaggerResponseAttribute(StatusCodes.Status404NotFound));
+.WithMetadata(new SwaggerOperationAttribute(summary: "Get one client.", description: "Returns one client if the existing id provided."));
 
-app.MapDelete("/api/v1/clients/{id:Guid}", async (Guid id, ApplicationDbContext db) =>
+app.MapDelete("/api/v1/clients/{id:Guid}", async (Guid id) =>
 {
-    var client = await db.Clients.FindAsync(id);
-    
-    if (client == null) return Results.NotFound(new { message = "Client not found." });
-    
-    db.Clients.Remove(client);
-    await db.SaveChangesAsync();
-    return Results.Json(client);
-});
+    try
+    {
+        var clientService = scope.ServiceProvider.GetRequiredService<ClientService>();
+        var addedClient = await clientService.DeleteClientAsync(id);
+        return Results.Ok(addedClient);
+    }
+    catch (ArgumentException ex)
+    {
+        return Results.BadRequest($"{ex.Message}");
+    }
+})
+.WithMetadata(new SwaggerOperationAttribute(summary: "Delete one client.", description: "Delete exising client and returns it, otherwise returns empty response."));
 
-app.MapPost("/api/v1/clients/add", async (Client client, ApplicationDbContext db) =>
+app.MapPost("/api/v1/clients/add", async (Client client) =>
 {
-    await db.Clients.AddAsync(client);
-    await db.SaveChangesAsync();
-    return client;
-});
+    try
+    {
+        var clientService = scope.ServiceProvider.GetRequiredService<ClientService>();
+        var addedClient = await clientService.AddClientAsync(client);
+        return Results.Created($"/api/v1/clients/{addedClient.Id}", addedClient);
+    }
+    catch (ArgumentException ex)
+    {
+        return Results.BadRequest($"{ex.Message}");
+    }
+})
+.WithMetadata(new SwaggerOperationAttribute(summary: "Add one client.", description: "Returns client if the adding is done."));
 
-
-app.MapGet("/api/v1/products", async (ApplicationDbContext db) => await db.Products.ToListAsync());
+app.MapGet("/api/v1/products", async (ApplicationDbContext db) => await db.Products.ToListAsync())
+.WithMetadata(new SwaggerOperationAttribute(summary: "Get all products.", description: "Returns all products."));
 
 app.MapGet("/api/v1/products/{id:Guid}", async (Guid id, ApplicationDbContext db) =>
 {
@@ -93,7 +127,8 @@ app.MapGet("/api/v1/products/{id:Guid}", async (Guid id, ApplicationDbContext db
     if (product == null) return Results.NotFound(new { message = "Product not found." });
     
     return Results.Json(product);
-});
+})
+.WithMetadata(new SwaggerOperationAttribute(summary: "Get product by id.", description: "Returns one product if the existing id provided."));
 
 app.MapDelete("/api/v1/products/{id:Guid}", async (Guid id, ApplicationDbContext db) =>
 {
@@ -104,13 +139,15 @@ app.MapDelete("/api/v1/products/{id:Guid}", async (Guid id, ApplicationDbContext
     db.Products.Remove(product);
     await db.SaveChangesAsync();
     return Results.Json(product);
-});
+})
+.WithMetadata(new SwaggerOperationAttribute(summary: "Delete product by id.", description: "Delete exising product and returns it, otherwise returns empty response."));
 
 app.MapPost("/api/v1/products/add", async (Product product, ApplicationDbContext db) =>
 {
     await db.Products.AddAsync(product);
     await db.SaveChangesAsync();
     return product;
-});
+})
+.WithMetadata(new SwaggerOperationAttribute(summary: "Add one product.", description: "Returns product if the adding is done."));
 
 app.Run();
