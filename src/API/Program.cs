@@ -21,10 +21,35 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
 app.UseHttpsRedirection();
 
-app.MapGet("/api/clients", async (ApplicationDbContext db) => await db.Clients.ToListAsync());
+app.MapGet("/api/v1/clients", async (ApplicationDbContext db) => await db.Clients.ToListAsync());
+
+app.MapGet("/api/v1/clients/{id:int}", async (int id, ApplicationDbContext db) =>
+{
+    var client = await db.Clients.FindAsync(id);
+    
+    if (client == null) return Results.NotFound(new { message = "Client not found." });
+    
+    return Results.Json(client);
+});
+
+app.MapDelete("/api/v1/clients/{id:int}", async (int id, ApplicationDbContext db) =>
+{
+    var client = await db.Clients.FindAsync(id);
+    
+    if (client == null) return Results.NotFound(new { message = "Client not found." });
+    
+    db.Clients.Remove(client);
+    await db.SaveChangesAsync();
+    return Results.Json(client);
+});
+
+app.MapPost("/api/v1/clients", async (Client client, ApplicationDbContext db) =>
+{
+    await db.Clients.AddAsync(client);
+    await db.SaveChangesAsync();
+    return client;
+});
 
 app.Run();
-
