@@ -45,7 +45,7 @@ app.MapDelete("/api/v1/clients/{id:Guid}", async (Guid id, ApplicationDbContext 
     return Results.Json(client);
 });
 
-app.MapPost("/api/v1/clients", async (Client client, ApplicationDbContext db) =>
+app.MapPost("/api/v1/clients/add", async (Client client, ApplicationDbContext db) =>
 {
     await db.Clients.AddAsync(client);
     await db.SaveChangesAsync();
