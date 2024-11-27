@@ -25,7 +25,7 @@ app.UseHttpsRedirection();
 
 app.MapGet("/api/v1/clients", async (ApplicationDbContext db) => await db.Clients.ToListAsync());
 
-app.MapGet("/api/v1/clients/{id:int}", async (int id, ApplicationDbContext db) =>
+app.MapGet("/api/v1/clients/{id:Guid}", async (Guid id, ApplicationDbContext db) =>
 {
     var client = await db.Clients.FindAsync(id);
     
@@ -34,7 +34,7 @@ app.MapGet("/api/v1/clients/{id:int}", async (int id, ApplicationDbContext db) =
     return Results.Json(client);
 });
 
-app.MapDelete("/api/v1/clients/{id:int}", async (int id, ApplicationDbContext db) =>
+app.MapDelete("/api/v1/clients/{id:Guid}", async (Guid id, ApplicationDbContext db) =>
 {
     var client = await db.Clients.FindAsync(id);
     
@@ -43,6 +43,36 @@ app.MapDelete("/api/v1/clients/{id:int}", async (int id, ApplicationDbContext db
     db.Clients.Remove(client);
     await db.SaveChangesAsync();
     return Results.Json(client);
+});
+
+app.MapPost("/api/v1/clients", async (Client client, ApplicationDbContext db) =>
+{
+    await db.Clients.AddAsync(client);
+    await db.SaveChangesAsync();
+    return client;
+});
+
+
+app.MapGet("/api/v1/products", async (ApplicationDbContext db) => await db.Clients.ToListAsync());
+
+app.MapGet("/api/v1/products/{id:Guid}", async (Guid id, ApplicationDbContext db) =>
+{
+    var product = await db.Products.FindAsync(id);
+    
+    if (product == null) return Results.NotFound(new { message = "Product not found." });
+    
+    return Results.Json(product);
+});
+
+app.MapDelete("/api/v1/products/{id:Guid}", async (Guid id, ApplicationDbContext db) =>
+{
+    var product = await db.Products.FindAsync(id);
+    
+    if (product == null) return Results.NotFound(new { message = "product not found." });
+    
+    db.Products.Remove(product);
+    await db.SaveChangesAsync();
+    return Results.Json(product);
 });
 
 app.MapPost("/api/v1/clients", async (Client client, ApplicationDbContext db) =>
