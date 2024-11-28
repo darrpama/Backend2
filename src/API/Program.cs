@@ -57,13 +57,14 @@ app.UseHttpsRedirection();
 
 var scope = app.Services.CreateScope();
 
+// Clients
 app.MapGet("/api/v1/clients", async (ApplicationDbContext db) =>
 {
     try
     {
         var clientService = scope.ServiceProvider.GetRequiredService<ClientService>();
-        var AllClients = await clientService.GetAllClientsAsync();
-        return Results.Ok(AllClients);
+        var allClients = await clientService.GetAllClientsAsync();
+        return Results.Ok(allClients);
     }
     catch (ArgumentException ex)
     {
@@ -92,8 +93,8 @@ app.MapDelete("/api/v1/clients/{id:Guid}", async (Guid id) =>
     try
     {
         var clientService = scope.ServiceProvider.GetRequiredService<ClientService>();
-        var addedClient = await clientService.DeleteClientAsync(id);
-        return Results.Ok(addedClient);
+        var deletedClient = await clientService.DeleteClientAsync(id);
+        return Results.Ok(deletedClient);
     }
     catch (ArgumentException ex)
     {
@@ -117,36 +118,63 @@ app.MapPost("/api/v1/clients/add", async (Client client) =>
 })
 .WithMetadata(new SwaggerOperationAttribute(summary: "Add one client.", description: "Returns client if the adding is done."));
 
-app.MapGet("/api/v1/products", async (ApplicationDbContext db) => await db.Products.ToListAsync())
-.WithMetadata(new SwaggerOperationAttribute(summary: "Get all products.", description: "Returns all products."));
+// Products
+app.MapGet("/api/v1/products", async (ApplicationDbContext db) =>
+{
+    try
+    {
+        var productService = scope.ServiceProvider.GetRequiredService<ProductService>();
+        var allProducts = await productService.GetAllProductsAsync();
+        return Results.Ok(allProducts);
+    }
+    catch (ArgumentException ex)
+    {
+        return Results.BadRequest($"{ex.Message}");
+    }
+}).WithMetadata(new SwaggerOperationAttribute(summary: "Get all products.", description: "Returns all products."));
 
 app.MapGet("/api/v1/products/{id:Guid}", async (Guid id, ApplicationDbContext db) =>
 {
-    var product = await db.Products.FindAsync(id);
-    
-    if (product == null) return Results.NotFound(new { message = "Product not found." });
-    
-    return Results.Json(product);
+    try
+    {
+        var productService = scope.ServiceProvider.GetRequiredService<ProductService>();
+        var client = await productService.GetProductAsync(id);
+        return Results.Ok(client);
+    }
+    catch (ArgumentException ex)
+    {
+        return Results.BadRequest($"{ex.Message}");
+    }
 })
 .WithMetadata(new SwaggerOperationAttribute(summary: "Get product by id.", description: "Returns one product if the existing id provided."));
 
 app.MapDelete("/api/v1/products/{id:Guid}", async (Guid id, ApplicationDbContext db) =>
 {
-    var product = await db.Products.FindAsync(id);
-    
-    if (product == null) return Results.NotFound(new { message = "product not found." });
-    
-    db.Products.Remove(product);
-    await db.SaveChangesAsync();
-    return Results.Json(product);
+    try
+    {
+        var productService = scope.ServiceProvider.GetRequiredService<ProductService>();
+        var deletedProduct = await productService.DeleteProductAsync(id);
+        return Results.Ok(deletedProduct);
+    }
+    catch (ArgumentException ex)
+    {
+        return Results.BadRequest($"{ex.Message}");
+    }
 })
 .WithMetadata(new SwaggerOperationAttribute(summary: "Delete product by id.", description: "Delete exising product and returns it, otherwise returns empty response."));
 
 app.MapPost("/api/v1/products/add", async (Product product, ApplicationDbContext db) =>
 {
-    await db.Products.AddAsync(product);
-    await db.SaveChangesAsync();
-    return product;
+    try
+    {
+        var productService = scope.ServiceProvider.GetRequiredService<ProductService>();
+        var addedProduct = await productService.AddProductAsync(product);
+        return Results.Created($"/api/v1/clients/{addedProduct.Id}", addedProduct);
+    }
+    catch (ArgumentException ex)
+    {
+        return Results.BadRequest($"{ex.Message}");
+    }
 })
 .WithMetadata(new SwaggerOperationAttribute(summary: "Add one product.", description: "Returns product if the adding is done."));
 
