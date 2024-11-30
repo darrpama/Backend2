@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace API.Model;
+namespace APIV1.Models;
 
 /// <summary>
 /// Presents a Client object.
@@ -44,6 +44,10 @@ public class Client : BaseModel
     /// <summary>
     /// Client address id.
     /// </summary>
-    [Column("address_id")]
     public Guid AddressId { get; set; }
+    
+    /// <summary>
+    /// Navigational property
+    /// </summary>
+    public Address? Address { get; set; }
 }

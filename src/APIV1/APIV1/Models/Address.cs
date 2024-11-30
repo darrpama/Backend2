@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace API.Model;
+namespace APIV1.Models;
 /// <summary>
 /// Presents an Address object.
 /// </summary>
@@ -27,4 +27,14 @@ public class Address : BaseModel
     [Column("street")]
     [MaxLength(100)]
     public string Street { get; set; } = "";
+    
+    /// <summary>
+    /// One address to many Clients.
+    /// </summary>
+    public List<Client> Clients { get; set; } = new List<Client>();
+    
+    /// <summary>
+    /// One address to many Suppliers.
+    /// </summary>
+    public List<Supplier> Suppliers { get; set; } = new List<Supplier>();
 }
