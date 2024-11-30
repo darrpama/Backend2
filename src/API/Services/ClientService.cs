@@ -1,9 +1,10 @@
 using API.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace API.Services;
 
-public class ClientService
+public class ClientService : IClientService
 {
     private readonly ApplicationDbContext _context;
 
@@ -52,14 +53,14 @@ public class ClientService
         }
     }
 
-    public async Task<Client> GetClientAsync(Guid id)
+    public async Task<Client> GetClientAsync(string name, string surname)
     {
         try
         {
-            var client = await _context.Clients.FindAsync(id);
+            var client = await _context.Clients.FirstOrDefaultAsync((c) => c.ClientName == name && c.ClientSurname == surname);
             if (client == null)
             {
-                throw new ArgumentException($"Invalid request: Client with id {id} does not exists.");
+                throw new ArgumentException($"Invalid request: Client with name {name} and surname {surname} does not exists.");
             }
             
             return client;
@@ -70,11 +71,15 @@ public class ClientService
         }
     }
 
-    public async Task<List<Client>> GetAllClientsAsync()
+    public async Task<List<Client>> GetAllClientsAsync(int limit, int offset)
     {
         try
         {
-            var clients = await _context.Clients.ToListAsync();
+            var clients = await _context.Clients
+                .Skip(offset)
+                .Take(limit)
+                .ToListAsync();
+            
             if (clients == null)
             {
                 throw new ArgumentException($"Invalid request: Clients relation does not exists.");
@@ -88,4 +93,23 @@ public class ClientService
         }
     }
 
+    public async Task<Client> ChangeClientAddressAsync(Guid id, Address address)
+    {
+        try
+        {
+            var client = await _context.Clients.FindAsync(id);
+            if (client == null)
+            {
+                throw new ArgumentException($"Invalid request: Client with id {id} does not exists.");
+            }
+
+            client.Address = address;
+            await _context.SaveChangesAsync();
+            return client;
+        }
+        catch
+        {
+            throw;
+        }
+    }
 }

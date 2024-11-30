@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Services;
 
-public class AddressService
+public class AddressService : IAddressService
 {
     private readonly ApplicationDbContext _context;
 

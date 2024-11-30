@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Services;
 
-public class SupplierService
+public class SupplierService : ISupplierService
 {
     private readonly ApplicationDbContext _context;
 

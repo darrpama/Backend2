@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Services;
 
-public class ImageService
+public class ImageService : IImageService
 {
     private readonly ApplicationDbContext _context;
 

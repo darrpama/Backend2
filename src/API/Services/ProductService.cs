@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Services;
 
-public class ProductService
+public class ProductService : IProductService
 {
     private readonly ApplicationDbContext _context;
 

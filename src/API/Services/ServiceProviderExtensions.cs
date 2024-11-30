@@ -1,3 +1,4 @@
+using api.Controllers;
 using API.Models;
 
 namespace API.Services;
@@ -6,7 +7,7 @@ public static class ServiceProviderExtensions
 {
     public static void AddClientService(this IServiceCollection services)
     {
-        services.AddScoped<ClientService>();
+        services.AddTransient<IClientService, ClientService>();
     }
     public static void AddProductService(this IServiceCollection services)
     {
