@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace API.Model;
+namespace API.Models;
 /// <summary>
 /// Presents a BaseModel object.
 /// </summary>

@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
-namespace API.Model;
+namespace API.Models;
 
 public class ApplicationDbContext : DbContext
 {
