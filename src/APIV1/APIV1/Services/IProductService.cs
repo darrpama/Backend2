@@ -1,6 +1,6 @@
-using API.Models;
+using APIV1.Models;
 
-namespace API.Services;
+namespace APIV1.Services;
 
 public interface IProductService
 {

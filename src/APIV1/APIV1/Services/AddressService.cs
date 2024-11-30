@@ -1,9 +1,9 @@
-using API.Models;
+using APIV1.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace API.Services;
+namespace APIV1.Services;
 
-public class AddressService
+public class AddressService : IAddressService
 {
     private readonly ApplicationDbContext _context;
 
