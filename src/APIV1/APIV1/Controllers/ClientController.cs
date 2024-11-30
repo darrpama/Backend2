@@ -76,7 +76,21 @@ public class ClientController : ControllerBase
         }
     }
     
+    /// <summary>
+    /// Удаление клента по id
+    /// </summary>
+    /// <param name="id">Идентификатор клиента</param>
+    /// <remarks>
+    /// Пример запроса:
+    ///
+    ///     DELETE /client/3fa85f64-5717-4562-b3fc-2c963f66afa6
+    ///
+    /// </remarks>
+    /// <returns></returns>
+    /// <response code="200">Успешное выполнение</response>
+    /// <response code="400">Ошибка API</response>
     [HttpDelete("{id:guid}")]
+    [ProducesResponseType(typeof(Client), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> DeleteClient(Guid id)
     {
         try
@@ -90,6 +104,35 @@ public class ClientController : ControllerBase
         }
     }
     
+    /// <summary>
+    /// Добавление клиента
+    /// </summary>
+    /// <param name="client">json с полями клиента</param>
+    /// <remarks>
+    /// Пример запроса:
+    ///
+    ///     POST /Client
+    ///
+    ///     {
+    ///        "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    ///        "clientName": "string",
+    ///        "clientSurname": "string",
+    ///        "birthday": "2024-11-30T17:55:22.398Z",
+    ///        "gender": "string",
+    ///        "registrationDate": "2024-11-30T17:55:22.398Z",
+    ///        "addressId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    ///        "address": {
+    ///            "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    ///            "country": "string",
+    ///            "city": "string",
+    ///            "street": "string"
+    ///        }
+    ///     }
+    /// 
+    /// </remarks>
+    /// <returns></returns>
+    /// <response code="200">Успешное выполнение</response>
+    /// <response code="400">Ошибка API</response>
     [HttpPost()]
     public async Task<IActionResult> AddClient([FromBody] Client client)
     {

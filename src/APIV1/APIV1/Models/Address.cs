@@ -28,13 +28,4 @@ public class Address : BaseModel
     [MaxLength(100)]
     public string Street { get; set; } = "";
     
-    /// <summary>
-    /// One address to many Clients.
-    /// </summary>
-    public List<Client> Clients { get; set; } = new List<Client>();
-    
-    /// <summary>
-    /// One address to many Suppliers.
-    /// </summary>
-    public List<Supplier> Suppliers { get; set; } = new List<Supplier>();
 }
