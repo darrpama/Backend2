@@ -1,13 +1,13 @@
 using APIV1.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace APIV1.Services;
+namespace APIV1.Repositories;
 
-public class PostgresSupplierRepository : ISupplierService
+public class SupplierRepository : ISupplierRepository
 {
     private readonly ApplicationDbContext _context;
 
-    public PostgresSupplierRepository(ApplicationDbContext context)
+    public SupplierRepository(ApplicationDbContext context)
     {
         _context = context;
     }

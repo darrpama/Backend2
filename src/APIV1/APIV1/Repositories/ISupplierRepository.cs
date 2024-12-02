@@ -2,7 +2,7 @@ using APIV1.Models;
 
 namespace APIV1.Repositories;
 
-public interface ISupplierRepository
+public interface ISupplierService
 {
     Task<Supplier> AddSupplierAsync(Supplier supplier);
     Task<Supplier> DeleteSupplierAsync(Guid id);

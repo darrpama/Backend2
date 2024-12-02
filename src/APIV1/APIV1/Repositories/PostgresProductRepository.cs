@@ -1,13 +1,13 @@
 using APIV1.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace APIV1.Services;
+namespace APIV1.Repositories;
 
-public class PostgresProductRepository : IProductService
+public class ProductRepository : IProductRepository
 {
     private readonly ApplicationDbContext _context;
 
-    public PostgresProductRepository(ApplicationDbContext context)
+    public ProductRepository(ApplicationDbContext context)
     {
         _context = context;
     }

@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace APIV1.Services;
 
-public class ImageService : IImageService
+public class PostgresImageRepository : IImageService
 {
     private readonly ApplicationDbContext _context;
 
-    public ImageService(ApplicationDbContext context)
+    public PostgresImageRepository(ApplicationDbContext context)
     {
         _context = context;
     }

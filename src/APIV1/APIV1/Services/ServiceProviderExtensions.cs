@@ -1,13 +1,13 @@
 namespace APIV1.Services;
 
-public static class ServiceProviderExtensions
+public static class RepositoryProviderExtensions
 {
-    public static void AddClientService(this IServiceCollection services)
+    public static void AddClientRepository(this IServiceCollection services)
     {
-        services.AddTransient<IClientService, ClientService>();
+        services.AddTransient<IClientRepository, ClientService>();
     }
-    public static void AddProductService(this IServiceCollection services)
+    public static void AddProductRepository(this IServiceCollection services)
     {
-        services.AddTransient<IProductService, ProductService>();
+        services.AddTransient<IProductRepository, ProductService>();
     }
 }

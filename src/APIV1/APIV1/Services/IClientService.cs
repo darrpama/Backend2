@@ -1,8 +1,8 @@
 using APIV1.Models;
 
-namespace APIV1.Services;
+namespace APIV1.Repositories;
 
-public interface IClientService
+public interface IClientRepository
 {
     Task<Client> AddClientAsync(Client client);
     Task<Client> DeleteClientAsync(Guid id);

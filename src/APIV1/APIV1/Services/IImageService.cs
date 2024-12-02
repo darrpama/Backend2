@@ -1,8 +1,8 @@
 using APIV1.Models;
 
-namespace APIV1.Services;
+namespace APIV1.Repositories;
 
-public interface IImageService
+public interface IImageRepository
 {
     Task<Image> AddImageAsync(Image image);
     Task<Image> DeleteImageAsync(Guid id);
