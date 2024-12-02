@@ -1,5 +1,6 @@
 using System.Reflection;
 using APIV1.Models;
+using APIV1.Repositories;
 using APIV1.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -9,7 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
+builder.Services.AddClientRepository();
 builder.Services.AddClientService();
+
+builder.Services.AddImageRepository();
+builder.Services.AddImageService();
 
 // Add db connection
 var connectionString =
