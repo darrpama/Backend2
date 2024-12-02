@@ -1,13 +1,17 @@
 namespace APIV1.Repositories;
 
-public static class ServiceProviderExtensions
+public static class RepositoryProviderExtensions
 {
-    public static void AddClientService(this IServiceCollection services)
+    public static void AddClientRepository(this IServiceCollection services)
     {
         services.AddTransient<IClientRepository, PostgresClientRepository>();
     }
-    public static void AddProductService(this IServiceCollection services)
+    public static void AddProductRepository(this IServiceCollection services)
     {
         services.AddTransient<IProductRepository, PostgresProductRepository>();
+    }
+    public static void AddImageRepository(this IServiceCollection services)
+    {
+        services.AddTransient<IImageRepository, PostgresImageRepository>();
     }
 }
