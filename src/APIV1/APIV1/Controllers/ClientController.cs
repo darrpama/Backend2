@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace APIV1.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/v1/[controller]")]
 public class ClientController : ControllerBase
 {
     private readonly IClientService _clientService;
@@ -26,7 +26,7 @@ public class ClientController : ControllerBase
     /// <remarks>
     /// Пример запроса:
     ///
-    ///     GET /client/3/0
+    ///     GET api/v1/client/3/0
     ///
     /// </remarks>
     /// <returns></returns>
@@ -55,7 +55,7 @@ public class ClientController : ControllerBase
     /// <remarks>
     /// Пример запроса:
     ///
-    ///     GET /client/Tom/Cruse
+    ///     GET api/v1/client/Tom/Cruse
     ///
     /// </remarks>
     /// <returns></returns>
@@ -83,7 +83,7 @@ public class ClientController : ControllerBase
     /// <remarks>
     /// Пример запроса:
     ///
-    ///     DELETE /client/3fa85f64-5717-4562-b3fc-2c963f66afa6
+    ///     DELETE api/v1/client/3fa85f64-5717-4562-b3fc-2c963f66afa6
     ///
     /// </remarks>
     /// <returns></returns>
@@ -107,11 +107,11 @@ public class ClientController : ControllerBase
     /// <summary>
     /// Добавление клиента
     /// </summary>
-    /// <param name="client">json с полями клиента</param>
+    /// <param name="client">Json с полями клиента</param>
     /// <remarks>
     /// Пример запроса:
     ///
-    ///     POST /Client
+    ///     POST api/v1/client
     ///
     ///     {
     ///        "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
@@ -131,9 +131,10 @@ public class ClientController : ControllerBase
     /// 
     /// </remarks>
     /// <returns></returns>
-    /// <response code="200">Успешное выполнение</response>
+    /// <response code="201">Успешное выполнение</response>
     /// <response code="400">Ошибка API</response>
     [HttpPost()]
+    [ProducesResponseType(typeof(Client), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> AddClient([FromBody] Client client)
     {
         try
@@ -147,7 +148,29 @@ public class ClientController : ControllerBase
         }
     } 
     
+    /// <summary>
+    /// Изменение адреса клиента
+    /// </summary>
+    /// <param name="id">Идентификатор клиента</param>
+    /// <param name="address">Json с полями адреса</param>
+    /// <remarks>
+    /// Пример запроса:
+    ///
+    ///     POST api/v1/client/3fa85f64-5717-4562-b3fc-2c963f66afa6
+    ///
+    ///      {
+    ///          "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    ///          "country": "string",
+    ///          "city": "string",
+    ///          "street": "string"
+    ///      }
+    /// 
+    /// </remarks>
+    /// <returns></returns>
+    /// <response code="200">Успешное выполнение</response>
+    /// <response code="400">Ошибка API</response>
     [HttpPut()]
+    [ProducesResponseType(typeof(Client), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> ChangeClientAddress(Guid id, [FromBody] Address address)
     {
         try
