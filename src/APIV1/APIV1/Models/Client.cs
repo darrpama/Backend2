@@ -11,15 +11,15 @@ public class Client : BaseModel
     /// <summary>
     /// Client name.
     /// </summary>
-    [Column("client_name")]
     [MaxLength(100)]
+    [Column("client_name")]
     public string ClientName { get; set; } = "";
     
     /// <summary>
     /// Client surname.
     /// </summary>
-    [Column("client_surname")]
     [MaxLength(100)]
+    [Column("client_surname")]
     public string ClientSurname { get; set; } = "";
     
     /// <summary>
@@ -31,8 +31,8 @@ public class Client : BaseModel
     /// <summary>
     /// Client gender.
     /// </summary>
-    [Column("gender")]
     [MaxLength(100)]
+    [Column("gender")]
     public string Gender { get; set; } = "";
     
     /// <summary>
@@ -40,11 +40,6 @@ public class Client : BaseModel
     /// </summary>
     [Column("registration_date")]
     public DateTimeOffset RegistrationDate { get; set; }
-    
-    /// <summary>
-    /// Client address id.
-    /// </summary>
-    public Guid AddressId { get; set; }
     
     /// <summary>
     /// Navigational property
