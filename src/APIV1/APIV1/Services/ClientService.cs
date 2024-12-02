@@ -1,119 +1,66 @@
 using APIV1.Models;
+using APIV1.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace APIV1.Services;
 
-public class PostgresClientRepository : IClientService
+public class ClientService : IClientService
 {
-    private readonly ApplicationDbContext _context;
+    private readonly IClientRepository _clientRepository;
 
-    public PostgresClientRepository(ApplicationDbContext context)
+    public ClientService(IClientRepository clientRepository)
     {
-        _context = context;
+        _clientRepository = clientRepository;
     }
 
     public async Task<Client> AddClientAsync(Client client)
     {
-        try
-        {
-            await _context.Clients.AddAsync(client);
-            await _context.SaveChangesAsync();
-            return client;
-        }
-        catch
-        {
-            throw;
-        }
-    }
-
-    public async Task<Client> DeleteClientAsync(Guid id)
-    {
-        try
-        {
-            var client = _context.Clients
-                .Include(c => c.Address)
-                .FirstOrDefault(c => c.Id == id);
-            if (client == null)
-            {
-                throw new ArgumentException($"Invalid request: Client with id {id} does not exists.");
-            }
-            
-            // _context.Addresses.Remove(client.Address);
-            _context.Clients.Remove(client);
-            await _context.SaveChangesAsync();
-            return client;
-        }
-        catch
-        {
-            throw;
-        }
+        await _clientRepository.CreateClientAsync(client);
+        return client;
     }
 
     public async Task<Client> GetClientAsync(string name, string surname)
     {
-        try
+        var client = await _clientRepository.ReadClientAsync(name, surname);
+        if (client == null)
         {
-            var client = await _context.Clients.FirstOrDefaultAsync((c) => c.ClientName == name && c.ClientSurname == surname);
-            if (client == null)
-            {
-                throw new ArgumentException($"Invalid request: Client with name {name} and surname {surname} does not exists.");
-            }
-            
-            return client;
+            throw new ArgumentException($"Invalid request: Client with name {name} and surname {surname} does not exists.");
         }
-        catch
-        {
-            throw;
-        }
+        return client;
     }
-
+    
     public async Task<List<Client>> GetAllClientsAsync(int limit, int offset)
     {
         if (limit < 0 || offset < 0)
         {
             throw new ArgumentException($"Invalid request: Limit {limit}, Offset {offset}.");
         }
-        try
-        {
-            var clients = await _context.Clients
-                .Skip(offset)
-                .Take(limit)
-                .Include(c => c.Address)
-                .ToListAsync();
-            
-            if (!clients.Any())
-            {
-                throw new ArgumentException($"No clients found.");
-            }
-            
-            return clients;
-        }
-        catch
-        {
-            throw;
-        }
+        var clients = await _clientRepository.ReadAllClientsAsync(limit, offset);
+        return clients;
     }
-    
     
     public async Task<Client> ChangeClientAddressAsync(Guid id, Address address)
     {
-        try
+        var client = await _clientRepository.UpdateClientAddressAsync(id, address);
+        if (client == null)
         {
-            var client = await _context.Clients.FindAsync(id);
-            if (client == null)
-            {
-                throw new ArgumentException($"Invalid request: Client with id {id} does not exists.");
-            }
-
-            client.Address = address;
-            await _context.SaveChangesAsync();
-            return client;
+            throw new ArgumentException($"Invalid request: Client with id {id} does not exists.");
         }
-        catch
-        {
-            throw;
-        }
+        return client;
     }
+    public async Task<Client> DeleteClientAsync(Guid id)
+    {
+        var client = await _clientRepository.DeleteClientAsync(id);
+        if (client == null)
+        {
+            throw new ArgumentException($"Invalid request: Client with id {id} does not exists.");
+        }
+        return client;
+    }
+
+
+    
+    
 
 }

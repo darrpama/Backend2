@@ -1,85 +1,53 @@
 using APIV1.Models;
+using APIV1.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace APIV1.Services;
 
-public class PostgresImageRepository : IImageService
+public class ImageService : IImageService
 {
-    private readonly ApplicationDbContext _context;
+    private readonly IImageRepository _imageRepository;
 
-    public PostgresImageRepository(ApplicationDbContext context)
+    public ImageService(IImageRepository imageRepository)
     {
-        _context = context;
+        _imageRepository = imageRepository;
     }
     
     public async Task<Image> AddImageAsync(Image image)
     {
-        try
-        {
-            await _context.Images.AddAsync(image);
-            await _context.SaveChangesAsync();
-            return image;
-        }
-        catch
-        {
-            throw;
-        }
-    }
-
-    public async Task<Image> DeleteImageAsync(Guid id)
-    {
-        try
-        {
-            var image = await _context.Images.FindAsync(id);
-            if (image == null)
-            {
-                throw new ArgumentException($"Invalid request: Image with id {id} does not exists.");
-            }
-            
-            _context.Images.Remove(image);
-            await _context.SaveChangesAsync();
-            return image;
-        }
-        catch
-        {
-            throw;
-        }
+        await _imageRepository.CreateImageAsync(image);
+        return image;
     }
 
     public async Task<Image> GetImageAsync(Guid id)
     {
-        try
+        var image = await _imageRepository.ReadImageAsync(id);
+        if (image == null)
         {
-            var image = await _context.Images.FindAsync(id);
-            if (image == null)
-            {
-                throw new ArgumentException($"Invalid request: Image with id {id} does not exists.");
-            }
-            
-            return image;
+            throw new ArgumentException($"Invalid request: Image with id {id} does not exists.");
         }
-        catch
-        {
-            throw;
-        }
+        return image;
     }
 
-    public async Task<List<Image>> GetAllImagesAsync()
+    public async Task<Image> UpdateImageAsync(Image image)
     {
-        try
+        var imageState = await _imageRepository.UpdateImageAsync(image);
+        if (imageState == null)
         {
-            var images = await _context.Images.ToListAsync();
-            if (images == null)
-            {
-                throw new ArgumentException($"Invalid request: Images relation does not exists.");
-            }
-            
-            return images;
+            throw new ArgumentException($"Invalid request: Image with id {image.Id} does not exists.");
         }
-        catch
+        
+        return imageState;
+    }
+    
+    public async Task<Image> DeleteImageAsync(Guid id)
+    {
+        var image = await _imageRepository.DeleteImageAsync(id);
+        if (image == null)
         {
-            throw;
+            throw new ArgumentException($"Invalid request: Image with id {id} does not exists.");
         }
+        return image;
     }
 
 }
