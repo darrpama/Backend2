@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace APIV1.Models;
@@ -9,12 +10,14 @@ public class Product : BaseModel
     /// <summary>
     /// Product name.
     /// </summary>
+    [MaxLength(100)]
     [Column("name")]
     public string Name { get; set; } = "";
 
     /// <summary>
     /// Product category.
     /// </summary>
+    [MaxLength(100)]
     [Column("category")]
     public string Category { get; set; } = "";
 

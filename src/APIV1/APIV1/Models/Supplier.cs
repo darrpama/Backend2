@@ -15,17 +15,17 @@ public class Supplier : BaseModel
     public string Name { get; set; } = "";
 
     /// <summary>
-    /// The id of address of current supplier.
-    /// </summary>
-    [Column("address_id")]
-    public Guid AddressId { get; set; }
-
-    /// <summary>
     /// The phone number of supplier.
     /// </summary>
     [Column("phone_number")]
     [MaxLength(100)]
     public string PhoneNumber { get; set; } = "";
+    
+    /// <summary>
+    /// Navigational property
+    /// </summary>
+    [Required]
+    public Address? Address { get; set; }
 }
 
 

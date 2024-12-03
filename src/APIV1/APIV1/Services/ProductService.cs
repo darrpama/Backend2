@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace APIV1.Services;
 
-public class PostgresProductRepository : IProductService
+public class ProductService : IProductService
 {
     private readonly ApplicationDbContext _context;
 
-    public PostgresProductRepository(ApplicationDbContext context)
+    public ProductService(ApplicationDbContext context)
     {
         _context = context;
     }

@@ -1,8 +1,8 @@
 using APIV1.Models;
 
-namespace APIV1.Repositories;
+namespace APIV1.Services;
 
-public interface IProductRepository
+public interface IProductService
 {
     Task<Product> AddProductAsync(Product product);
     Task<Product> DeleteProductAsync(Guid id);

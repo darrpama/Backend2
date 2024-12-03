@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace APIV1.Services;
 
-public class PostgresSupplierRepository : ISupplierService
+public class SupplierService : ISupplierService
 {
     private readonly ApplicationDbContext _context;
 
-    public PostgresSupplierRepository(ApplicationDbContext context)
+    public SupplierService(ApplicationDbContext context)
     {
         _context = context;
     }

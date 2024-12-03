@@ -25,13 +25,13 @@ public class ImageController : ControllerBase
     /// <remarks>
     /// Пример запроса:
     ///
-    ///     GET api/v1/image/getImageOfProduct/3fa85f64-5717-4562-b3fc-2c963f66afa6
+    ///     GET api/v1/Image/ProductId/3fa85f64-5717-4562-b3fc-2c963f66afa6
     ///
     /// </remarks>
     /// <returns></returns>
     /// <response code="200">Успешное выполнение</response>
     /// <response code="400">Ошибка API</response>
-    [HttpGet("/getImageOfProduct/{id:guid}")]
+    [HttpGet("ProductId/{id:guid}")]
     [ProducesResponseType(typeof(Image), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> GetImage(Guid id)
     {
@@ -53,7 +53,7 @@ public class ImageController : ControllerBase
     /// <remarks>
     /// Пример запроса:
     ///
-    ///     GET api/v1/image/3fa85f64-5717-4562-b3fc-2c963f66afa6
+    ///     GET api/v1/Image/3fa85f64-5717-4562-b3fc-2c963f66afa6
     ///
     /// </remarks>
     /// <returns></returns>
@@ -81,7 +81,7 @@ public class ImageController : ControllerBase
     /// <remarks>
     /// Пример запроса:
     ///
-    ///     DELETE /client/3fa85f64-5717-4562-b3fc-2c963f66afa6
+    ///     DELETE api/v1/Image/3fa85f64-5717-4562-b3fc-2c963f66afa6
     ///
     /// </remarks>
     /// <returns></returns>
@@ -110,7 +110,7 @@ public class ImageController : ControllerBase
     /// <remarks>
     /// Пример запроса:
     ///
-    ///     POST api/v1/image/3fa85f64-5717-4562-b3fc-2c963f66afa6
+    ///     POST api/v1/Image/3fa85f64-5717-4562-b3fc-2c963f66afa6
     ///
     ///      {
     ///          "image": "3fa85f64-5717-4562-b3fc-2c963f66afa6"

@@ -6,6 +6,10 @@ public static class ServiceProviderExtensions
     {
         services.AddTransient<IClientService, ClientService>();
     }
+    public static void AddSupplierService(this IServiceCollection services)
+    {
+        services.AddTransient<ISupplierService, SupplierService>();
+    }
     public static void AddProductService(this IServiceCollection services)
     {
         services.AddTransient<IProductService, ProductService>();

@@ -1,6 +1,6 @@
 namespace APIV1.Controllers;
 
-public class AddressController
+public class SupplierController
 {
     
 }

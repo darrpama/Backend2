@@ -10,6 +10,10 @@ public static class RepositoryProviderExtensions
     {
         services.AddTransient<IProductRepository, PostgresProductRepository>();
     }
+    public static void AddSupplierRepository(this IServiceCollection services)
+    {
+        services.AddTransient<ISupplierRepository, PostgresSupplierRepository>();
+    }
     public static void AddImageRepository(this IServiceCollection services)
     {
         services.AddTransient<IImageRepository, PostgresImageRepository>();

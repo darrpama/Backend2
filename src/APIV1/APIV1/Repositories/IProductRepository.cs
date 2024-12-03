@@ -2,10 +2,11 @@ using APIV1.Models;
 
 namespace APIV1.Repositories;
 
-public interface IProductService
+public interface IProductRepository
 {
-    Task<Product> AddProductAsync(Product product);
-    Task<Product> DeleteProductAsync(Guid id);
-    Task<Product> GetProductAsync(Guid id);
-    Task<List<Product>> GetAllProductsAsync();
+    Task<Product?> CreateProductAsync(Product product);
+    Task<Product?> ReadProductAsync(Guid id);
+    Task<Product?> UpdateProductAsync(Product product);
+    Task<Product?> DeleteProductAsync(Guid id);
+    Task<List<Product>> GetAllProductsAsync(int limit, int offset);
 }
